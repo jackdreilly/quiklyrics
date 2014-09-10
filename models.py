@@ -4,7 +4,7 @@ Created on Oct 22, 2010
 @author: jackreilly
 '''
 from google.appengine.ext import db
-from json import dumps
+from simplejson import dumps
 
 class Site( db.Model ):
     name = db.StringProperty(required=True)
