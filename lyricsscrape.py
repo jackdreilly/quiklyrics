@@ -1,4 +1,3 @@
-from BeautifulSoup import BeautifulSoup
 from urllib2 import Request, urlopen
 import re
 import models
@@ -6,7 +5,7 @@ from titlecase import titlecase
 import boss
 from qlsite import findSite
 import logging
-from bs4 import BeautifulSoup as bs
+from bs4 import BeautifulSoup
 import logging
 from google.appengine.api import urlfetch
 
@@ -35,7 +34,7 @@ def storeAndSearch(search):
 def getLyrics(hit):
     try:
         result = hit.url.replace('\\/','/')
-        page = bs(urlfetch.fetch(url = result).content)
+        page = BeautifulSoup(urlfetch.fetch(url = result).content)
         sln = page.find("div", id = 'content_h')
         sln = ''.join([str(c) for c in sln.contents])
         return {'title':page.find('title').text,'content':sln}        
@@ -65,7 +64,8 @@ def getChords( hit ):
     hit_url = hit.url
     divtype = hit.site.div
     url_txt = urlopen( Request( hit_url ) ).read()
-    soup = BeautifulSoup( url_txt )
+    # soup = BeautifulSoup( url_txt )
+    soup = None
     if 'ultimate' in hit.site.name:
         lyricsSet = soup.findAll( 'div', {'id':divtype} )
         regex = r'(<div[\s\w=\n\r\t\_"]*>).*(</div>)'
