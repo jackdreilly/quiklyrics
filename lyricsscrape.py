@@ -7,8 +7,8 @@ import boss
 from qlsite import findSite
 import logging
 from bs4 import BeautifulSoup as bs
-import requests
 import logging
+from google.appengine.api import urlfetch
 
 
 def storeAndSearch(search):
@@ -33,42 +33,10 @@ def storeAndSearch(search):
 
 
 def getLyrics(hit):
-    # def cleanLyrics(lyrics):
-    #     stupidLink = re.compile( '\[.*http.*\]', re.IGNORECASE )
-    #     lyrics = stupidLink.sub( '', lyrics )
-    #     upperChorus = re.compile( 'chorus', re.IGNORECASE )
-    #     lyrics = upperChorus.sub( 'CHORUS', lyrics )
-    #     return lyrics
-    
-    # def getTitle(soup):
-    #     title = str( soup.findAll( 'title' )[0] )
-    #     removeLyrics = re.compile( 'lyrics', re.IGNORECASE )
-    #     title = removeLyrics.sub( '', title )
-    #     title = str( titlecase( title.replace( '<title>', '' ).replace( '</title>', '' ).lower() ) )
-    #     return title
-    # hit_url = hit.url
-    # divtype = hit.site.div
-    # url_txt = urlopen( Request( hit_url ) ).read()
-    # soup = BeautifulSoup( url_txt )
-    # if divtype == 'azlyrics':
-    #     lyrics = str( url_txt )
-    #     finder = re.findall( r'.*<!-- start of lyrics -->(.*)<!-- end of lyrics -->.*', lyrics, re.DOTALL )
-    #     lyrics = finder[0]
-    # else:
-    #     lyricsSet = soup.findAll( 'div', {'id':divtype} )
-    #     lyrics = str( lyricsSet[0] )
-    #     tags = re.findall( r'(<div[\s\w=\n\r\t\_"]*>).*(</div>)', lyrics, re.DOTALL )
-    #     lyrics = lyrics.replace( tags[0][0], '' ).replace( tags[0][1], '' )
-    # lyrics = cleanLyrics(lyrics)
-    # title = getTitle(soup)
-    logging.info('trying to get winner')
     try:
         result = hit.url.replace('\\/','/')
-        logging.info('after result')
-        page = bs(requests.get(result).content)
-        # logging.info('page results: ' + str(page))
+        page = bs(urlfetch.fetch(url = result).content)
         sln = page.find("div", id = 'content_h')
-        # logging.info('solution: ' + sln)
         sln = ''.join([str(c) for c in sln.contents])
         return {'title':page.find('title').text,'content':sln}        
     except Exception, e:
