@@ -1,7 +1,7 @@
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
-from json import dumps
+from simplejson import dumps
 import os
 import lyricsscrape
 from models import Title, Site
