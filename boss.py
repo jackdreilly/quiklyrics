@@ -32,7 +32,7 @@ httplib.HTTPResponse.read = patch_http_response_read(httplib.HTTPResponse.read)
 from urllib import quote_plus
 # from oauthlib import oauth1
 # from google.appengine.api import urlfetch
-import json
+import simplejson
 import requests
 # key = 'dj0yJmk9VmNYWU1kNXgxbkxhJmQ9WVdrOWNuWkdZbFE0TXpBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD02Mg--'
 # secret = 'c8e26945311409681e14dbdbaaccfb0d79ba64c9'
@@ -69,7 +69,7 @@ def getLyricsForSong(song):
     page = requests.get(url).content
     # print 'trying to save', json.loads(page)['bossresponse']['limitedweb']['results']
     # return [{'url': x['url'], 'title': x['title']} for x in json.loads(page)['bossresponse']['limitedweb']['results']]
-    results = [{'url': x['link'], 'title': x['title']} for x in json.loads(page)['items']]
+    results = [{'url': x['link'], 'title': x['title']} for x in simplejson.loads(page)['items']]
     logging.info('n results: ' + str(len(results)))
     return results
     # result = json.loads(page)['bossresponse']['limitedweb']['results'][0]['url'].replace('\\/','/')
