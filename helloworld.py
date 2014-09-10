@@ -53,7 +53,7 @@ class getLyricsHandler( webapp.RequestHandler ):
                 return
             Title( title = title, city = city, state = state, country = country, contenttype = type_ ).put()
             self.response.out.write( dumps( {'post':lyrics, 'title':title,'hits':resultPack['hits']} ) )
-        except httplib.IncompleteRead as e:
+        except httplib.IncompleteRead, e:
             # print 'hi'
             # print e
             # print type(e)
